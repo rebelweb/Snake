@@ -10,6 +10,9 @@ from segment import Segment
 x_change = segment_width + segment_margin
 y_change = 0
 
+# initial_length
+length = 15
+
 # Call this function so the Pygame library can initialize itself
 pygame.init()
 
@@ -17,19 +20,21 @@ pygame.init()
 screen = pygame.display.set_mode([800, 600])
 
 # Set the title of the window
-pygame.display.set_caption('Snake Example')
+pygame.display.set_caption('Snake')
 
 allspriteslist = pygame.sprite.Group()
 
-# Create an initial snake
-snake_segments = []
-for i in range(15):
+def grow():
     x = 250 - (segment_width + segment_margin) * i
     y = 30
     segment = Segment(x, y)
     snake_segments.append(segment)
     allspriteslist.add(segment)
 
+# Create an initial snake
+snake_segments = []
+for i in range(length):
+    grow()
 
 clock = pygame.time.Clock()
 done = False
@@ -45,15 +50,19 @@ while not done:
         # segment, plus the margin.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
+                grow()
                 x_change = (segment_width + segment_margin) * -1
                 y_change = 0
             if event.key == pygame.K_RIGHT:
+                grow()
                 x_change = (segment_width + segment_margin)
                 y_change = 0
             if event.key == pygame.K_UP:
+                grow()
                 x_change = 0
                 y_change = (segment_height + segment_margin) * -1
             if event.key == pygame.K_DOWN:
+                grow()
                 x_change = 0
                 y_change = (segment_height + segment_margin)
 
