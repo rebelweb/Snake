@@ -1,37 +1,14 @@
 import pygame
-
-# --- Globals ---
-# Colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-
-# Set the width and height of each snake segment
-segment_width = 15
-segment_height = 15
-# Margin between each segment
-segment_margin = 3
+from globals import BLACK
+from globals import WHITE
+from globals import segment_width
+from globals import segment_height
+from globals import segment_margin
+from segment import Segment
 
 # Set initial speed
 x_change = segment_width + segment_margin
 y_change = 0
-
-
-class Segment(pygame.sprite.Sprite):
-    """ Class to represent one segment of the snake. """
-    # -- Methods
-    # Constructor function
-    def __init__(self, x, y):
-        # Call the parent's constructor
-        super().__init__()
-
-        # Set height, width
-        self.image = pygame.Surface([segment_width, segment_height])
-        self.image.fill(WHITE)
-
-        # Make our top-left corner the passed-in location.
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
 
 # Call this function so the Pygame library can initialize itself
 pygame.init()
