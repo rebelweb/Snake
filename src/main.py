@@ -10,7 +10,7 @@ from segment import Segment
 x_change = segment_width + segment_margin
 y_change = 0
 
-# initial_length
+# initial length
 length = 15
 
 # Call this function so the Pygame library can initialize itself
@@ -22,17 +22,17 @@ screen = pygame.display.set_mode([800, 600])
 # Set the title of the window
 pygame.display.set_caption('Snake')
 
-allspriteslist = pygame.sprite.Group()
+sprites_list = pygame.sprite.Group()
+snake_segments = []
 
 def grow():
     x = 250 - (segment_width + segment_margin) * i
     y = 30
     segment = Segment(x, y)
     snake_segments.append(segment)
-    allspriteslist.add(segment)
+    sprites_list.add(segment)
 
 # Create an initial snake
-snake_segments = []
 for i in range(length):
     grow()
 
@@ -69,7 +69,7 @@ while not done:
     # Get rid of last segment of the snake
     # .pop() command removes last item in list
     old_segment = snake_segments.pop()
-    allspriteslist.remove(old_segment)
+    sprites_list.remove(old_segment)
 
     # Figure out where new segment will be
     x = snake_segments[0].rect.x + x_change
@@ -78,13 +78,13 @@ while not done:
 
     # Insert new segment into the list
     snake_segments.insert(0, segment)
-    allspriteslist.add(segment)
+    sprites_list.add(segment)
 
     # -- Draw everything
     # Clear screen
     screen.fill(BLACK)
 
-    allspriteslist.draw(screen)
+    sprites_list.draw(screen)
 
     # Flip screen
     pygame.display.flip()
