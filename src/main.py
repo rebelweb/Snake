@@ -9,9 +9,11 @@ from segment import Segment
 # Set initial speed
 x_change = segment_width + segment_margin
 y_change = 0
+speed = 5
 
 # initial length
-length = 15
+start_length = 15
+length = 0
 
 # Call this function so the Pygame library can initialize itself
 pygame.init()
@@ -25,15 +27,36 @@ pygame.display.set_caption('Snake')
 sprites_list = pygame.sprite.Group()
 snake_segments = []
 
+def speed_multiplier():
+    global length
+    multiplier = 1
+
+    if (length < 20):
+        multiplier = 1.010
+    elif (length < 25):
+        multiplier = 1.25
+    elif (length < 30):
+        multiplier = 1.40
+    elif (length < 50):
+        multiplier = 1.5
+    else:
+        multiplier = 1
+
+    return multiplier
+
 def grow():
+    global speed, length
     x = 250 - (segment_width + segment_margin) * i
     y = 30
     segment = Segment(x, y)
     snake_segments.append(segment)
     sprites_list.add(segment)
+    length += 1
+    if (length > 15):
+        speed = speed * speed_multiplier()
 
 # Create an initial snake
-for i in range(length):
+for i in range(start_length):
     grow()
 
 clock = pygame.time.Clock()
@@ -76,6 +99,9 @@ while not done:
     y = snake_segments[0].rect.y + y_change
     segment = Segment(x, y)
 
+    if (x < -0 or x > 600 or y < 0 or y > 600):
+        done = True
+
     # Insert new segment into the list
     snake_segments.insert(0, segment)
     sprites_list.add(segment)
@@ -90,6 +116,6 @@ while not done:
     pygame.display.flip()
 
     # Pause
-    clock.tick(5)
+    clock.tick(speed)
 
 pygame.quit()
