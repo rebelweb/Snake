@@ -27,6 +27,23 @@ pygame.display.set_caption('Snake')
 sprites_list = pygame.sprite.Group()
 snake_segments = []
 
+def speed_multiplier():
+    global length
+    multiplier = 1
+
+    if (length < 20):
+        multiplier = 1.010
+    elif (length < 25):
+        multiplier = 1.25
+    elif (length < 30):
+        multiplier = 1.40
+    elif (length < 50):
+        multiplier = 1.5
+    else:
+        multiplier = 1
+
+    return multiplier
+
 def grow():
     global speed, length
     x = 250 - (segment_width + segment_margin) * i
@@ -36,7 +53,7 @@ def grow():
     sprites_list.add(segment)
     length += 1
     if (length > 15):
-        speed = speed * 1.025
+        speed = speed * speed_multiplier()
 
 # Create an initial snake
 for i in range(start_length):
