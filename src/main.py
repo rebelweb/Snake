@@ -99,6 +99,9 @@ while not done:
     y = snake_segments[0].rect.y + y_change
     segment = Segment(x, y)
 
+    if (x < -0 or x > 600 or y < 0 or y > 600):
+        done = True
+
     # Insert new segment into the list
     snake_segments.insert(0, segment)
     sprites_list.add(segment)
