@@ -10,7 +10,6 @@ from segment import Segment
 x_change = segment_width + segment_margin
 y_change = 0
 speed = 5
-
 # initial length
 start_length = 15
 length = 0
@@ -27,23 +26,6 @@ pygame.display.set_caption('Snake')
 sprites_list = pygame.sprite.Group()
 snake_segments = []
 
-def speed_multiplier():
-    global length
-    multiplier = 1
-
-    if (length < 20):
-        multiplier = 1.010
-    elif (length < 25):
-        multiplier = 1.25
-    elif (length < 30):
-        multiplier = 1.40
-    elif (length < 50):
-        multiplier = 1.5
-    else:
-        multiplier = 1
-
-    return multiplier
-
 def grow():
     global speed, length
     x = 250 - (segment_width + segment_margin) * i
@@ -53,7 +35,15 @@ def grow():
     sprites_list.add(segment)
     length += 1
     if (length > 15):
-        speed = speed * speed_multiplier()
+        speed = speed * 1.015
+
+font_name = pygame.font.match_font('arial')
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
 
 # Create an initial snake
 for i in range(start_length):
@@ -99,7 +89,8 @@ while not done:
     y = snake_segments[0].rect.y + y_change
     segment = Segment(x, y)
 
-    if (x < -0 or x > 600 or y < 0 or y > 600):
+    # primative edge detection
+    if (x < -0 or x > 800 or y < 0 or y > 600):
         done = True
 
     # Insert new segment into the list
@@ -111,7 +102,7 @@ while not done:
     screen.fill(BLACK)
 
     sprites_list.draw(screen)
-
+    draw_text(screen, str(length - 15), 18, 800 / 2, 10)
     # Flip screen
     pygame.display.flip()
 
